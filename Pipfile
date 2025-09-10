@@ -9,6 +9,9 @@ pytest = "*"
 django-environ = "*"
 pytest-django = "*"
 easy-thumbnails = "*"
+shortuuid = "*"
+phonenumbers = "*"
+django-phonenumber-field = "*"
 
 [dev-packages]
 flake8 = "*"

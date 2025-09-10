@@ -1,9 +1,35 @@
 <header class="d-flex justify-content-center py-3 bg-dark">
-  <ul class="nav nav-pills">
-    <li class="nav-item"><a href="#" class="nav-link active text-white" aria-current="page">Home</a></li>
-    <li class="nav-item"><a href="#" class="nav-link text-white">Features</a></li>
-    <li class="nav-item"><a href="#" class="nav-link text-white">Pricing</a></li>
-    <li class="nav-item"><a href="#" class="nav-link text-white">FAQs</a></li>
-    <li class="nav-item"><a href="#" class="nav-link text-white">About</a></li>
-  </ul>
+    <ul class="nav nav-pills">
+        <li class="nav-item"><a href="{% url 'core:home' %}" class="nav-link active text-white"
+                                aria-current="page">Home</a></li>
+        <li class="nav-item"><a href="#" class="nav-link text-white">Features</a></li>
+        <li class="nav-item"><a href="#" class="nav-link text-white">Pricing</a></li>
+        <li class="nav-item"><a href="#" class="nav-link text-white">FAQs</a></li>
+
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="#" id="authDropdown" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false">
+                Auth
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="authDropdown">
+                <li class="dropdown-header">
+                    {% if user.is_authenticated %}
+                        {{ user.first_name|default:user.phone_number }}
+                    {% else %}
+                        Anonymous User
+                    {% endif %}
+                </li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="#">Login</a></li>
+                <li><a class="dropdown-item" href="#">Logout</a></li>
+                <li><a class="dropdown-item" href="#">Register</a></li>
+                <li><a class="dropdown-item" href="#">Reset password</a></li>
+                <li><a class="dropdown-item" href="#">Change password</a></li>
+                    <hr class="dropdown-divider">
+                <li><a class="dropdown-item" href="{% url 'admin:index' %}">Admin</a></li>
+            </ul>
+        </li>
+    </ul>
 </header>
