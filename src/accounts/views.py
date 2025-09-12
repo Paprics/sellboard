@@ -1,9 +1,9 @@
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormView
 from django.core.mail import send_mail
-from .forms import UserRegistrationForm, LoginForm
+from .forms import UserRegistrationForm, LoginForm, ChangePasswordForm
 
 
 class UserRegisterView(FormView):
@@ -34,4 +34,21 @@ class LoginView(FormView):
 
     def form_valid(self, form):
         login(self.request, form.get_user())
+        return super().form_valid(form)
+
+class ChangePasswordView(FormView):
+    template_name = "change_password.html"
+    form_class = ChangePasswordForm
+    success_url = reverse_lazy("core:home")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        password = form.cleaned_data['new_password1']
+        user = form.save()
+        user = authenticate(username=user.username, password=password)
+        login(self.request, user)
         return super().form_valid(form)
