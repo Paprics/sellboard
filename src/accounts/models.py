@@ -34,8 +34,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         unique=True,
     )
 
-    first_name = models.CharField(_("first name"), max_length=150)
-    last_name = models.CharField(_("last name"), max_length=150, blank=True)
+    user_name = models.CharField(
+        _("display name"),
+        max_length=150,
+        blank=False,
+        null=False,
+        help_text=_("This name will be shown on the site."),
+    )
 
     is_staff = models.BooleanField(
         _("staff status"),
@@ -51,6 +56,12 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     )
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
 
+    is_verified = models.BooleanField(
+        _("email verified"),
+        default=False,
+        help_text=_("Designates whether the user's email address has been verified."),
+    )
+
     objects = CustomUserManager()
 
     USERNAME_FIELD = "phone_number"
@@ -62,7 +73,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         db_table = "users"
 
     def __str__(self):
-        return f"{self.phone_number} {self.first_name}"
+        return f"{self.phone_number} {self.user_name}"
 
 
 class Profile(models.Model):

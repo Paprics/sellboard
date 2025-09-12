@@ -22,12 +22,18 @@
                 <li>
                     <hr class="dropdown-divider">
                 </li>
-                <li><a class="dropdown-item" href="#">Login</a></li>
-                <li><a class="dropdown-item" href="#">Logout</a></li>
-                <li><a class="dropdown-item" href="#">Register</a></li>
+                <li><a class="dropdown-item" href="{% url 'accounts:login' %}">Login</a></li>
+
+
+                <form method="post" action="{% url 'accounts:logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="dropdown-item">Logout</button>
+                </form>
+
+                <li><a class="dropdown-item" href="{% url 'accounts:signup' %}">Register</a></li>
                 <li><a class="dropdown-item" href="#">Reset password</a></li>
                 <li><a class="dropdown-item" href="#">Change password</a></li>
-                    <hr class="dropdown-divider">
+                <hr class="dropdown-divider">
                 <li><a class="dropdown-item" href="{% url 'admin:index' %}">Admin</a></li>
             </ul>
         </li>
