@@ -1,8 +1,8 @@
-from django.contrib.auth import get_user_model, authenticate
-from django.contrib.auth.forms import UserCreationForm
 from django import forms
+from django.contrib.auth import (authenticate, get_user_model,
+                                 password_validation)
+from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth import password_validation
 
 user_model = get_user_model()
 
@@ -10,20 +10,19 @@ user_model = get_user_model()
 class UserRegistrationForm(UserCreationForm):
     class Meta:
         model = user_model
-        fields = ['user_name', 'email', 'phone_number', 'password1', 'password2']
+        fields = ["user_name", "email", "phone_number", "password1", "password2"]
 
     def clean_email(self):
-        email = self.cleaned_data.get('email')
+        email = self.cleaned_data.get("email")
         if user_model.objects.filter(email=email).exists():
             raise forms.ValidationError("This email is already registered.")
         return email
 
     def clean_phone_number(self):
-        phone_number = self.cleaned_data.get('phone_number')
+        phone_number = self.cleaned_data.get("phone_number")
         if user_model.objects.filter(phone_number=phone_number).exists():
             raise forms.ValidationError("This phone number is already registered.")
         return phone_number
-
 
 
 class LoginForm(forms.Form):
@@ -44,6 +43,7 @@ class LoginForm(forms.Form):
 
     def get_user(self):
         return getattr(self, "user", None)
+
 
 class ChangePasswordForm(forms.Form):
     old_password = forms.CharField(
@@ -90,4 +90,3 @@ class ChangePasswordForm(forms.Form):
         if commit:
             self.user.save()
         return self.user
-

@@ -1,9 +1,10 @@
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.views import LoginView
+from django.core.mail import send_mail
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormView
-from django.core.mail import send_mail
-from .forms import UserRegistrationForm, LoginForm, ChangePasswordForm
+
+from .forms import ChangePasswordForm, LoginForm, UserRegistrationForm
 
 
 class UserRegisterView(FormView):
@@ -13,10 +14,10 @@ class UserRegisterView(FormView):
 
     def form_valid(self, form):
         user = form.save(commit=False)
-        user.is_verified  = False
+        user.is_verified = False
         user.save()
 
-        #TODO
+        # TODO
         # Отправка письма
         # send_mail(
         #     subject="Confirm your email",
@@ -27,6 +28,7 @@ class UserRegisterView(FormView):
 
         return super().form_valid(form)
 
+
 class LoginView(FormView):
     template_name = "login-temp.html"
     success_url = reverse_lazy("core:home")
@@ -35,6 +37,7 @@ class LoginView(FormView):
     def form_valid(self, form):
         login(self.request, form.get_user())
         return super().form_valid(form)
+
 
 class ChangePasswordView(FormView):
     template_name = "change_password.html"
@@ -47,7 +50,7 @@ class ChangePasswordView(FormView):
         return kwargs
 
     def form_valid(self, form):
-        password = form.cleaned_data['new_password1']
+        password = form.cleaned_data["new_password1"]
         user = form.save()
         user = authenticate(username=user.username, password=password)
         login(self.request, user)

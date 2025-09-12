@@ -9,7 +9,8 @@ from core import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("core.urls")),
-    path('auth/', include('accounts.urls')),
+    path("auth/", include("accounts.urls")),
+    path("transports/", include("transports.urls")),
 ]
 
 # DEBUG TOOLBAR
