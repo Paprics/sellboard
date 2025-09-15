@@ -12,6 +12,7 @@ easy-thumbnails = "*"
 shortuuid = "*"
 phonenumbers = "*"
 django-phonenumber-field = "*"
+faker = "*"
 
 [dev-packages]
 flake8 = "*"
