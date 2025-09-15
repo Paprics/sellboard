@@ -3,16 +3,18 @@ from django.contrib.auth.base_user import BaseUserManager
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email=None, phone_number=None, password=None, **extra_fields):
-        if not email and not phone_number:
-            raise ValueError("User must have an email or phone number")
-
-        # если email уже передали через extra_fields, вытащим и используем
+        # сначала вытаскиваем из extra_fields, если не передали напрямую
         email = email or extra_fields.pop("email", None)
         phone_number = phone_number or extra_fields.pop("phone_number", None)
 
-        if email:
-            email = self.normalize_email(email)
+        if not email:
+            raise ValueError("Users must have an email address")
+        if not phone_number:
+            raise ValueError("Users must have a phone number")
+        if not password:
+            raise ValueError("Users must have a password")
 
+        email = self.normalize_email(email)
         user = self.model(email=email, phone_number=phone_number, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
